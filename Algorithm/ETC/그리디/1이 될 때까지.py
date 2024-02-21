@@ -1,15 +1,12 @@
-n, k = map(int, input().split())
-result = 0
+n = int(input())
+array = list(map(int, input().split()))
+array.sort()
 
-while n >= k:
-  while n % k != 0:
-    n -= 1
-    result += 1
-  n //= k
-  result += 1
-
-while n > 1:
-  n -= 1
-  result += 1
+result = 1
+for i in range(len(array)):
+  if array[i] <= result:
+    result += array[i]
+  else:
+    break
 
 print(result)
