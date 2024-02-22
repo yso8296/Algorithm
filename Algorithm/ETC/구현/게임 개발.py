@@ -1,42 +1,41 @@
 n, m = map(int, input().split())
 x, y, d = map(int, input().split())
-array = []
-for i in range(n):
-  array.append(list(map(int, input().split())))
-result = 1
-array[x - 1][y - 1] = 2
+graph = []
+for _ in range(n):
+  graph.append(list(map(int, input().split())))
 dx = [-1, 0, 1, 0] # 북 동 남 서
 dy = [0, 1, 0, -1]
-turn_count = 0
+idx = 0
+count = 1
+graph[x][y] = 2
 
-def turn_left():
-  global d
-  d -= 1
-  if d == -1:
-    d = 3
+def turn_left(direction):
+  return (direction + 3) % 4
 
 while True:
-    turn_left()
-    nx = x + dx[d]
-    ny = y + dy[d]
+   d = turn_left(d) # 1
+   
+   nx = x + dx[d] # 2
+   ny = y + dy[d]
+   if graph[nx][ny] == 0:
+     graph[nx][ny] = 2
+     x = nx
+     y = ny
+     idx = 0
+     count += 1
+     continue
+   else:
+     idx += 1
 
-    if(array[nx][ny] == 0):
-        array[nx][ny] = 2
+   if idx == 4:
+      nx = x + dx[(d + 2) % 4]
+      ny = y + dy[(d + 2) % 4]
+      
+      if graph[nx][ny] == 2:
         x = nx
         y = ny
-        turn_count = 0
-        result += 1
-    else:
-       turn_count += 1
-    
-    if turn_count == 4:
-       nx = x - dx[(d + 2) % 4]
-       ny = y - dy[(d + 2) % 4]
-       if array[nx][ny] != 1:
-          x = nx
-          y = ny
-          turn_count = 0
-       else:
-          break
-
-print(result)
+        idx = 0
+      elif graph[nx][ny] == 1:
+        break
+   
+print(count)
