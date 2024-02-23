@@ -1,53 +1,51 @@
-n = int(input())
-k = int(input())
+n = int(input()) # 보드의 크기
+k = int(input()) # 사과의 개수
 array = [[0] * (n + 1) for _ in range(n + 1)]
-time_info = []
 for _ in range(k):
   x, y = map(int, input().split())
   array[x][y] = 1
-l = int(input())
+l = int(input()) 
+info = [] # 뱀의 방향 변환 정보
 for _ in range(l):
   x, c = input().split()
-  time_info.append((int(x), c))
+  info.append((int(x), c))
 dx = [-1, 0, 1, 0] # 북 동 남 서
-dy = [0, 1, 0, -1]
-cur_x = 1
-cur_y = 1
+dy = [ 0, 1, 0, -1]
+array[1][1] = 2
 dir = 1
+x = 1
+y = 1
 time = 0
-body_info = [(cur_x, cur_y)]
-array[cur_x][cur_y] = 2
-index = 0
+body_info = []
+body_info.append((1, 1))
 
 while True:
-  #1 이동
   time += 1
-  nx = cur_x + dx[dir]
-  ny = cur_y + dy[dir]
-  #2 벽인지 확인
+  nx = x + dx[dir]
+  ny = y + dy[dir]
   if nx < 1 or nx > n or ny < 1 or ny > n:
-    break 
-  #3 자신의 몸인지 확인
+    break
   if array[nx][ny] == 2:
     break
-  #4 사과 확인
-  if array[nx][ny] == 1: # 사과라면
+  if array[nx][ny] == 1:
     array[nx][ny] = 2
-    cur_x = nx
-    cur_y = ny
-    body_info.append((nx, ny))
+    x = nx
+    y = ny
+    body_info.append((x, y))
   else:
+    a, b = body_info.pop(0)
+    array[a][b] = 0
     array[nx][ny] = 2
-    cur_x = nx
-    cur_y = ny
-    px, py = body_info.pop(0)
-    array[px][py] = 0
-    body_info.append((nx, ny))
-  #5 방향전환 확인
-  if index < l and time == time_info[index][0]:
-    if time_info[index][1] == 'L':
-      dir = (dir - 1) % 4  
-    elif time_info[index][1] == 'D':
-      dir = (dir + 1) % 4
-    index += 1
+    x = nx
+    y = ny
+    body_info.append((x, y))
+  if len(info) != 0:
+    t, d = info[0]
+    if t == time:
+      if d == 'L':
+        dir = (dir + 3) % 4
+      if d == 'D':
+        dir = (dir + 1) % 4
+      info.pop(0)
+  
 print(time)
