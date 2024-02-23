@@ -2,35 +2,32 @@ from collections import deque
 n, m = map(int, input().split())
 graph = []
 for _ in range(n):
-  s = input()
-  graph.append(list(s))
-result = 0
-dx = [-1, 0, 1, 0]
+  graph.append(list(input()))
+dx = [-1, 0, 1, 0] # 북 동 남 서
 dy = [0, 1, 0, -1]
 
 def bfs(x, y):
-  if graph[x][y] == '1':
-    return
-  global result
-  queue = deque([(x, y)])
-  graph[x][y] = '1'
+  queue = deque()
+  queue.append((x, y))
 
   while queue:
     a, b = queue.popleft()
     for i in range(4):
-      nx = int(a) + dx[i]
-      ny = int(b) + dy[i]
+      nx = a + dx[i]
+      ny = b + dy[i]
       if nx < 0 or nx >= n or ny < 0 or ny >= m:
         continue
       if graph[nx][ny] == '1':
         continue
       graph[nx][ny] = '1'
-      queue.append((str(nx), str(ny)))
+      queue.append((nx, ny))
 
-  result += 1
-
+count = 0
 for i in range(n):
   for j in range(m):
-    bfs(i, j)
+    if graph[i][j] == '0':
+      bfs(i, j)
+      count += 1
 
-print(result)
+print(count)
+  
