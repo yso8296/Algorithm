@@ -1,16 +1,17 @@
 n, m = map(int, input().split())
 array = []
-for i in range(n):
+for _ in range(n):
   array.append(int(input()))
-dp = [10001] * (m + 1)
+array.sort()
+dp = [int(1e9)] * 101
+for num in array:
+  dp[num] = 1
 
-dp[0] = 0
 for i in range(n):
   for j in range(array[i], m + 1):
-    if dp[j - array[i]] != 10001:
-      dp[j] = min(dp[j], dp[j - array[i]] + 1)
+    dp[j] = min(dp[j], dp[array[i]] + dp[j - array[i]])
 
-if dp[m] == 10001:
+if dp[m] == int(1e9):
   print(-1)
 else:
   print(dp[m])
