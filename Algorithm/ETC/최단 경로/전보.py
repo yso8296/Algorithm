@@ -1,11 +1,11 @@
 import heapq
+n, m, c = map(int, input().split())
 INF = int(1e9)
-n, m, start = map(int, input().split())
 graph = [[] for _ in range(n + 1)]
 distance = [INF] * (n + 1)
 for _ in range(m):
-  a, b, c = map(int, input().split())
-  graph[a].append((b, c))
+  x, y, z = map(int, input().split())
+  graph[x].append((y, z))
 
 def dijkstra(start):
   q = []
@@ -19,14 +19,15 @@ def dijkstra(start):
       cost = dist + i[1]
       if cost < distance[i[0]]:
         distance[i[0]] = cost
-        heapq.heappush(q, (cost, i[0]))
+      heapq.heappush(q, (cost, i[0]))
 
-dijkstra(start)
+dijkstra(c)
+
+result = 0
 count = 0
-dist = 0
-for d in distance:
-  if d != INF:
+for dist in distance:
+  if dist != INF:
     count += 1
-    dist = max(dist, d)
+    result = max(result, dist)
 
-print(count - 1, dist)
+print(count - 1, result)
