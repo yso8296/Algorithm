@@ -1,15 +1,11 @@
 n = int(input())
 array = list(map(int, input().split()))
 array.reverse()
-result = 0
+dp = [0] * n
+max_value = 0
 
-for i in range(n):
-  temp = 1
-  max_num = array[i]
-  for j in range(i, n):
-    if array[j] > max_num:
-      temp += 1
-      max_num = array[j]
-  result = max(result, temp)
-
-print(n - result)
+for i in range(len(array)):
+  for j in range(i):
+    if array[j] < array[i]:
+      dp[i] = max(dp[i], dp[j] + 1)
+print(n - max(dp) - 1)
