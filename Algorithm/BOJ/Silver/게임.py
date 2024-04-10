@@ -1,17 +1,15 @@
 x, y = map(int, input().split())
-initial_ratio = int(y * 100 / x)
+left = 1
+right = 1000000000
+rate = (100 * y) // x
+result = - 1
 
-def binary_search(start, end):
-  while start <= end:
-    mid = (start + end) // 2
-    temp = int((y + mid) * 100 / (x + mid))
-    if temp <= initial_ratio:
-      start = mid + 1
-    else:
-      end = mid - 1
-  return start
-
-if initial_ratio >= 99:
-  print(-1)
-else:
-  print(binary_search(0, 1000000000))
+while left <= right:
+  mid = (left + right) // 2
+  new_rate = (100 * (y + mid) // (x + mid))
+  if new_rate != rate:
+    right = mid - 1
+    result = mid
+  else:
+    left = mid + 1
+print(result)
