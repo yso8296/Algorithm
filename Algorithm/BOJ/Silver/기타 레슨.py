@@ -1,23 +1,27 @@
 n, m = map(int, input().split())
 array = list(map(int, input().split()))
-result = int(1e9)
 
-def binary_search(start, end): # 9 45
-  global result
+def binary_search():
+  start = max(array)
+  end = int(1e9)
+  result = int(1e9)
+
   while start <= end:
-    mid = (start + end) // 2
+    num = 0
     sum = 0
-    count = 1
-    for i in range(len(array)):
-      if sum + array[i] > mid:
-        count += 1
-        sum = 0
+    mid = (start + end) // 2
+    for i in range(n):
       sum += array[i]
-    if count <= m:
-      result = mid
-      end = mid - 1
-    else:
+      if sum > mid:
+        num += 1
+        sum = array[i]
+    if sum > 0:
+      num += 1
+    if num > m:
       start = mid + 1
-    
-binary_search(max(array), sum(array))
-print(result)
+    else:
+      end = mid - 1
+      result = min(result, mid)
+  return result
+
+print(binary_search())
