@@ -1,17 +1,13 @@
-s = list(input())
-t = list(input())
-check = False
+s = input()
+t = input()
 
-while t:
+while len(t) > len(s):
   if t[-1] == 'A':
-    t.pop()
+    t = t[0:-1]
   elif t[-1] == 'B':
-    t.pop()
-    t.reverse()
+    t = t[0:-1]
+    t = t[::-1]
   if s == t:
-    check = True
-    break
-if check:
-  print(1)
-else:
-  print(0)
+    print(1)
+    exit()
+print(0)
