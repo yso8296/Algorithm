@@ -1,30 +1,25 @@
 n, m = map(int, input().split())
-graph = [[] * n for _ in range(n)]
+graph = [[] for _ in range(n)]
 for _ in range(m):
   a, b = map(int, input().split())
   graph[a].append(b)
   graph[b].append(a)
-check = False
-visited = [0] * n
+visited = [False] * n
 
 def dfs(start, count):
-  global check
-  visited[start] = 1
   if count == 5:
-    check = True
-    return
+    print(1)
+    exit()
   
   for i in graph[start]:
     if not visited[i]:
+      visited[i] = True
       dfs(i, count + 1)
-  visited[start] = 0
+      visited[i] = False
 
 for i in range(n):
+  visited = [False] * n
+  visited[i] = True
   dfs(i, 1)
-  if check:
-    break
-
-if check:
-  print(1)
-else:
-  print(0)
+print(0)  
+    
