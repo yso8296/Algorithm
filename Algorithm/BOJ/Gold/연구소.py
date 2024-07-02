@@ -1,58 +1,55 @@
-import copy
 from collections import deque
+import copy
 n, m = map(int, input().split())
-graph = []
-for _ in range(n):
-  graph.append(list(map(int, input().split())))
-result = 0
-dx = [-1, 0, 1, 0] # 북 동 남 서
+board = [list(map(int, input().split())) for _ in range(n)]
+dx = [-1, 0, 1, 0]
 dy = [0, 1, 0, -1]
+result = 0
 
-#1 벽 세우기
-def make_wall(count):
+def make_wall(count):  # [1] 벽 세우기
   if count == 3:
     virus()
     return
   
   for i in range(n):
     for j in range(m):
-      if graph[i][j] == 0:
-        graph[i][j] = 1
+      if board[i][j] == 0:
+        board[i][j] = 1
         make_wall(count + 1)
-        graph[i][j] = 0  
+        board[i][j] = 0
 
-#2 바이러스 전파
-def virus():
-  temp = copy.deepcopy(graph)
-  queue = deque()
+
+def virus():  # [2] 바이러스 전파
+  global result
+  temp = copy.deepcopy(board)
+  q = deque()
   for i in range(n):
     for j in range(m):
       if temp[i][j] == 2:
-        queue.append((i, j))
+        q.append((i, j))
   
-  while queue:
-    x, y = queue.popleft()
+  while q:
+    x, y = q.popleft()
     for i in range(4):
       nx = x + dx[i]
       ny = y + dy[i]
       if nx < 0 or nx >= n or ny < 0 or ny >= m:
         continue
-      if temp[nx][ny] > 0:
+      if temp[nx][ny] != 0:
         continue
       temp[nx][ny] = 2
-      queue.append((nx, ny))
+      q.append((nx, ny)) 
   
-  calculate(temp)
+  result = max(result, calculate(temp))
 
-#3 안전 영역 크기 계산
-def calculate(temp):
-  global result
+def calculate(temp):  # [3] 안전 영역 계산
   count = 0
   for i in range(n):
     for j in range(m):
       if temp[i][j] == 0:
         count += 1
-  result = max(result, count)
+  return count
 
 make_wall(0)
+
 print(result)
